@@ -14,6 +14,22 @@
 
 void returnNone() { return; }
 
+void InjectDLL(const std::string& dllPath)
+{
+    if (bIsHosting.load())
+        return;
+
+    if (LoadLibraryA(dllPath.c_str()))
+    {
+        std::cout << "Successfully loaded DLL: " << dllPath << std::endl;
+        bIsHosting.store(true);
+    }
+    else
+    {
+        std::cerr << "Failed to load DLL: " << dllPath << std::endl;
+    }
+}
+
 auto FindPushWidget()
 {
     // OnlinePresence call

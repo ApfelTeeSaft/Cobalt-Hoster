@@ -11,7 +11,7 @@
 
 inline CURLcode(*CurlSetOpt)(struct Curl_easy*, CURLoption, va_list) = nullptr;
 inline CURLcode(*CurlEasySetOpt)(struct Curl_easy*, CURLoption, ...) = nullptr;
-
+void InjectDLL(const std::string& dllPath);
 inline CURLcode CurlSetOpt_(struct Curl_easy* data, CURLoption option, ...)
 {
 	va_list arg;
@@ -75,6 +75,11 @@ inline CURLcode CurlEasySetOptDetour(struct Curl_easy* data, CURLoption tag, ...
 			{
 				std::cout << "Empty query!\n";
 			}
+		}
+
+		if (url.find(urlToTraceForInject) != std::string::npos)
+		{
+			InjectDLL(dllPath);
 		}
 
 		std::cout << "URL: " << uri.Host << uri.Path << '\n';
